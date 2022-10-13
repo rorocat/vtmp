@@ -1,7 +1,8 @@
 {
 	"easycom": {
 		"custom": {
-			"^tm-(.*)": "/@/tmui/components/tm-$1/tm-$1.vue"
+			"^tm-(.*)": "/@/tmui/components/tm-$1/tm-$1.vue",
+			"^Basic(.*)": "/@/components/Basic/components/Basic$1/Basic$1.vue"
 		}
 	},
 	"pages": [

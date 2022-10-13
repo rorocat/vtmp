@@ -349,6 +349,14 @@
 		isSetThemeOk.value = false;
 		setAppStyle();
 	});
+	watch(
+		()=> props.color,
+		(value)=> {
+			if(!isDark.value) {
+				appConfig.value.theme = value;
+			}
+		}
+	)
 
 	function toogleOpen(type: boolean) {
 		_showMenu.value = type;

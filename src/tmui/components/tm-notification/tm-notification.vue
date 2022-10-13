@@ -243,6 +243,16 @@ import { showOpts } from "./interface";
 		label_str.value = props.label;
 		icon_str.value = props.icon;
 	})
+	watch(
+		()=> [props.label, props.icon],
+		(newVal)=> {
+			label_str.value = newVal[0];
+			icon_str.value = newVal[1];
+		},
+		{
+			deep: true
+		}
+	)
 	function endAnimation(){
 		clearTimeout(timeid.value)
 		if(props.duration==0&&!handleClose.value) return;
@@ -262,9 +272,9 @@ import { showOpts } from "./interface";
 			reverse.value=true;
 			handleClose.value=false;
 			nextTick(function(){
-				if(tranmatioan.value){
+				setTimeout(()=> {
 					tranmatioan.value?.play();
-				}
+				})
 			})
 			return;
 		}
