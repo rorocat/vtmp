@@ -51,7 +51,7 @@ export const usePageRouter = ()=> {
 	 */
 	function initQuery(query: any) {
 		if(isUnDef(query) || isEmpty(query)) return;
-		const tempQuery = query as any;
+		const tempQuery = JSON.parse(JSON.stringify(query));
 		for (const key in tempQuery) {
 			const value = JSON.parse(decodeURIComponent(tempQuery[key]));
 			tempQuery[key] = value;
