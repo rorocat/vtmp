@@ -2,7 +2,9 @@
   <div class="basic-notice">
     <tm-notification
       ref="instanceRef"
-      v-bind="configOptions" />
+      v-bind="configOptions">
+      <slot></slot>
+    </tm-notification>
   </div>
 </template>
 <script setup lang="ts">

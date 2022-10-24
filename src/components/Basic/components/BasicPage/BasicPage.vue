@@ -5,11 +5,17 @@
       <!-- 基础内容 -->
       <slot></slot>
       <!-- confirm -->
-      <BasicConfirm ref="confirmRef" />
+      <BasicConfirm ref="confirmRef">
+        <slot name="confirm"></slot>
+      </BasicConfirm>
       <!-- notice -->
-      <BasicNotice ref="noticeRef" />
+      <BasicNotice ref="noticeRef">
+        <slot name="notice"></slot>
+      </BasicNotice>
       <!-- message -->
-      <BasicMessage ref="messageRef" />
+      <BasicMessage ref="messageRef">
+        <slot name="message"></slot>
+      </BasicMessage>
     </tm-app>
   </div>
 </template>

@@ -1,12 +1,19 @@
 <template>
   <BasicPage
     @register="register">
-      <tm-button label="showConfirm" @click="showConfirm" />
-      <tm-button label="showNotice" @click="showNotice" />
-      <tm-button label="showMessage" @click="showMessage" />
-      <tm-button :label="`切换主题${appTheme}`" @click="changeTheme" />
-      <tm-button :label="`切换模式${appDark}`" @click="changeDark" />
-      <tm-button label="跳转Demo页面" @click="go" />
+    <tm-button label="showConfirm" @click="showConfirm" />
+    <tm-button label="showNotice" @click="showNotice" />
+    <tm-button label="showMessage" @click="showMessage" />
+    <tm-button :label="`切换主题${appTheme}`" @click="changeTheme" />
+    <tm-button :label="`切换模式${appDark}`" @click="changeDark" />
+    <tm-button label="跳转Demo页面" @click="go" />
+    <template #confirm>
+      <view>
+        <view>
+          <tm-input />
+        </view>
+      </view>
+    </template>
   </BasicPage>
 </template>
 

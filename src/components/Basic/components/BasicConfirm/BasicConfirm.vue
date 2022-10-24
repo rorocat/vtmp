@@ -5,7 +5,9 @@
       v-model:show="show"
       @ok="configOptions.onConfirm"
       @close="configOptions.onClose"
-      @cancel="configOptions.onCancel" />
+      @cancel="configOptions.onCancel">
+      <slot></slot>
+    </tm-modal>
   </div>
 </template>
 

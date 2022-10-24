@@ -2,7 +2,9 @@
   <div class="basic-message">
     <tm-message 
       ref="instanceRef"
-      v-bind="configOptions" />
+      v-bind="configOptions">
+      <slot></slot>  
+    </tm-message>
   </div>
 </template>
 <script setup lang="ts">
