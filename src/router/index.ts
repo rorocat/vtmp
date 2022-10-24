@@ -22,7 +22,6 @@ interface PageRouterOptions extends UniApp.NavigateToOptions {
  */
 export const useTmRouterBefore = (arg:beforeRouterOpts):void=>{
     // 每一个页面在初化前都会执行
-		console.log(arg);
 }
 /**
  * 路由访问后执行的函数
@@ -31,7 +30,6 @@ export const useTmRouterBefore = (arg:beforeRouterOpts):void=>{
  */
 export const useTmRouterAfter = (arg:beforeRouterOpts):void=>{
     //每一个页面初始后都会执行
-		console.log(arg);
 	 
 }
 
@@ -39,15 +37,36 @@ export const usePageRouter = ()=> {
 	/**
 	 * ref
 	 */
+	const PARAM_PREFIX_KEY = 'PARAM_PARAMS_KEY';
 	const pageQuery = ref({});
-	onLoad((options)=> {
-		if(isUnDef(options) || isEmpty(options)) return;
-		const tempQuery = options as any;
+	const pageParams = ref({});
+
+	onLoad((options)=> {		
+		initQuery(options);
+		initParams();
+	});
+
+	/**
+	 * 初始化页面query参数
+	 */
+	function initQuery(query: any) {
+		if(isUnDef(query) || isEmpty(query)) return;
+		const tempQuery = query as any;
 		for (const key in tempQuery) {
-			tempQuery[key] = JSON.parse(decodeURIComponent(tempQuery[key]));
+			const value = JSON.parse(decodeURIComponent(tempQuery[key]));
+			tempQuery[key] = value;
 		}
 		pageQuery.value = tempQuery;
-	});
+	}
+
+	/**
+	 * 初始化页面param参数
+	 */
+	function initParams() {
+		const currentPage = getCurrentPage();
+		const paramsKey = `${PARAM_PREFIX_KEY}/${currentPage.route}`;
+		pageParams.value = uni.getStorageSync(paramsKey);
+	}
 
 	/**
 	 * 页面跳转
@@ -61,6 +80,11 @@ export const usePageRouter = ()=> {
 			}
 		}
 		const pageOption: PageRouterOptions = options;
+		// params暂存
+		if(!!pageOption.params && isObject(pageOption.params) && !isEmpty(pageOption.params)) {
+			const paramsKey = `${PARAM_PREFIX_KEY}${pageOption.url}`
+			uni.setStorageSync(paramsKey, pageOption.params);
+		}
 		// query参数拼接
 		if(!!pageOption.query && isObject(pageOption.query)) {
 			const queryList = [];
@@ -79,7 +103,7 @@ export const usePageRouter = ()=> {
 			}
 			pageOption.url += `?${queryList.join('&')}`;
 		}
-		// params暂存
+		
 		const {
 			mode,
 			url,
@@ -168,6 +192,7 @@ export const usePageRouter = ()=> {
 		goPage,
 		backPage,
 		pageInfo,
-		pageQuery
+		pageQuery,
+		pageParams
 	}
 }

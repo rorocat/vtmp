@@ -6,7 +6,7 @@
       <tm-button label="showMessage" @click="showMessage" />
       <tm-button :label="`切换主题${appTheme}`" @click="changeTheme" />
       <tm-button :label="`切换模式${appDark}`" @click="changeDark" />
-      <tm-button label="跳转页面" @click="go" />
+      <tm-button label="跳转Demo页面" @click="go" />
   </BasicPage>
 </template>
 
@@ -82,7 +82,7 @@
     goPage({
       url: '/pages/demo/demo',
       mode: 'navigateTo',
-      query1: {
+      query: {
         a: 1,
         b: [{
           name: 'LiMing',
@@ -95,6 +95,12 @@
         c: {
           d: [1,2,3,4,5,6,7,8,9],
           e: 2
+        }
+      },
+      params: {
+        formData: {
+          name: 'LiHua',
+          age: 18
         }
       }
     });

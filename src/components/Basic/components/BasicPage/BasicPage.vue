@@ -82,11 +82,7 @@ const action: PageActionType = {
     }
   },
   setProps(props: PageProps) {
-    console.log(props);
-    
-    pageProps.value = props;
-    console.log(pageProps.value);
-    
+    pageProps.value = props;    
   }
 }
 
