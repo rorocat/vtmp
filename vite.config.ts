@@ -1,22 +1,34 @@
 import { defineConfig } from "vite";
 import uni from "@dcloudio/vite-plugin-uni";
-import { resolve } from 'path';
-
-function pathResolve(dir: string) {
-  return resolve(process.cwd(), '.', dir);
-}
-
-
+import vueJsx from "@vitejs/plugin-vue-jsx";
+import { resolve } from "path"
+// import Components from 'unplugin-vue-components/vite'
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [uni()],
-  resolve: {
-    alias: [
-      // /@/xxxx => src/xxxx
-      {
-        find: /\/@\//,
-        replacement: pathResolve('src') + '/',
-      },
-    ],
-  },
+	build: {
+		target: "es6"
+	},
+	resolve: {
+		alias: [
+			{
+				find: "@",
+				replacement: resolve(__dirname, 'src')
+			}
+		]
+	},
+	server: {
+		port: 1314,
+		// 选项写法
+		proxy: {
+			'/pag': {
+				target: 'https://cdn.tmui.design',
+				changeOrigin: true,
+				rewrite: (path) => path.replace(/^\/api/, '/api')
+			},
+		}
+	},
+	plugins: [
+		uni(),
+		vueJsx()
+	]
 });

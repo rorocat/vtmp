@@ -1,24 +1,76 @@
 <template>
-	<view>
-		<view v-if="!_label && props.vertical"
-			:style="[{backgroundColor: (_realColor?tmcomputed.color:tmcomputed.border)}, props.vertical ? { width: props.border+'rpx', height: props.height + 'rpx' } : '']"
-			:class="[props.vertical ? `mx-${props.margin[0]}` : `my-${props.margin[1]}`]"></view>
-		<view v-if="_label && !props.vertical" class="flex flex-row flex-center">
-			<view :style="[tmcomputed ? { backgroundColor: (_realColor?tmcomputed.color:tmcomputed.border), height: props.border + 'rpx' } : '']"
-				:class="[`my-${props.margin[1]}`, align == 'left' ? 'flex-2' : '', align == 'right' ? 'flex-10' : '', align == 'center' ? 'flex-1' : '']">
+	<view @click="onClick">
+		<view
+			:userInteractionEnabled="false"
+			v-if="!_label && props.vertical"
+			:style="[
+				{ backgroundColor: _realColor ? tmcomputed.color : tmcomputed.border },
+				props.vertical ? { width: props.border + 'rpx', height: props.height + 'rpx' } : ''
+			]"
+			:class="[props.vertical ? `mx-${props.margin[0]}` : `my-${props.margin[1]}`]"
+		></view>
+		<view :userInteractionEnabled="false" v-if="_label && !props.vertical" class="flex flex-row flex-center">
+			<view
+				:style="[
+					tmcomputed
+						? {
+								backgroundColor: _realColor ? tmcomputed.color : tmcomputed.border,
+								height: props.border + 'rpx'
+						  }
+						: ''
+				]"
+				:class="[
+					`my-${props.margin[1]}`,
+					align == 'left' ? 'flex-2' : '',
+					align == 'right' ? 'flex-10' : '',
+					align == 'center' ? 'flex-1' : ''
+				]"
+			>
 			</view>
-			<view v-if="props.label" :class="[(isDark ? 'opacity-4' : '')]">
-				<tm-text :fontSize="props.fontSize" :dark="isDark" :followTheme="props.followTheme" :color="props.fontColor"
-					:label="props.label" :_class="['mx-32']"></tm-text>
+			<view v-if="_label" :class="[isDark ? 'opacity-4' : '']">
+				<slot name="label">
+					<tm-text
+						:fontSize="props.fontSize"
+						:dark="isDark"
+						:followTheme="props.followTheme"
+						:color="props.fontColor"
+						:label="props.label"
+						:_class="['mx-32']"
+					></tm-text>
+				</slot>
 			</view>
-			<view :style="[tmcomputed ? { backgroundColor:(_realColor?tmcomputed.color:tmcomputed.border), height: props.border + 'rpx' } : '']"
-				:class="[`my-${props.margin[1]}`, align == 'left' ? 'flex-10' : '', align == 'right' ? 'flex-2' : '', align == 'center' ? 'flex-1' : '']">
+			<view
+				:style="[
+					tmcomputed
+						? {
+								backgroundColor: _realColor ? tmcomputed.color : tmcomputed.border,
+								height: props.border + 'rpx'
+						  }
+						: ''
+				]"
+				:class="[
+					`my-${props.margin[1]}`,
+					align == 'left' ? 'flex-10' : '',
+					align == 'right' ? 'flex-2' : '',
+					align == 'center' ? 'flex-1' : ''
+				]"
+			>
 			</view>
 		</view>
-		<view v-if="!_label && !props.vertical" class="flex flex-row flex-center">
-			<view class="flex-1" :class="[`my-${props.margin[1]}`]" :style="[tmcomputed ? { backgroundColor: (_realColor?tmcomputed.color:tmcomputed.border), height: props.border + 'rpx' } : '']">
+		<view :userInteractionEnabled="false" v-if="!_label && !props.vertical" class="flex flex-row flex-center">
+			<view
+				class="flex-1"
+				:class="[`my-${props.margin[1]}`]"
+				:style="[
+					tmcomputed
+						? {
+								backgroundColor: _realColor ? tmcomputed.color : tmcomputed.border,
+								height: props.border + 'rpx'
+						  }
+						: ''
+				]"
+			>
 			</view>
-			
 		</view>
 	</view>
 </template>
@@ -28,22 +80,12 @@
  * 分割线
  * @description 分割线，带文本标签，提供左，中，右文本标签。
  */
-import {
-	getCurrentInstance,
-	computed,
-	ref,
-	provide,
-	inject
-} from "vue";
-import { tmVuetify } from "../../tool/lib/interface";
-import {
-	custom_props,
-	computedTheme,
-	computedDark,
-} from "../../tool/lib/minxs";
-import { useTmpiniaStore } from '../../tool/lib/tmpinia';
-const store = useTmpiniaStore();
-import tmText from "../tm-text/tm-text.vue";
+import { getCurrentInstance, computed, ref, provide, inject } from 'vue'
+import { tmVuetify } from '../../tool/lib/interface'
+import { custom_props, computedTheme, computedDark } from '../../tool/lib/minxs'
+import { useTmpiniaStore } from '../../tool/lib/tmpinia'
+import tmText from '../tm-text/tm-text.vue'
+const store = useTmpiniaStore()
 // 混淆props共有参数
 const props = defineProps({
 	...custom_props,
@@ -51,11 +93,11 @@ const props = defineProps({
 		type: String,
 		default: 'grey-3'
 	},
-	fontColor:{
+	fontColor: {
 		type: String,
 		default: 'grey-1'
 	},
-	fontSize:{
+	fontSize: {
 		type: Number,
 		default: 26
 	},
@@ -71,6 +113,10 @@ const props = defineProps({
 		type: String,
 		default: ''
 	},
+	showLabel: {
+		type: Boolean,
+		default: false
+	},
 	align: {
 		type: String,
 		default: 'center' //left,right,center
@@ -84,29 +130,41 @@ const props = defineProps({
 		default: 1
 	},
 	//使用原始颜色为线条色，而不使用计算过的颜色值。
-	realColor:{
+	realColor: {
 		type: [Boolean],
 		default: false
 	}
-});
+})
+const emits = defineEmits(['click'])
 //线的方向。
-const borderDir = computed(() => props.vertical ? 'left' : 'bottom');
-const _label = computed(() => props.label);
-const proxy = getCurrentInstance()?.proxy??null;
+const borderDir = computed(() => (props.vertical ? 'left' : 'bottom'))
+const _label = computed(() => props.label || props.showLabel)
 // 设置响应式全局组件库配置表。
-const tmcfg = computed<tmVuetify>(() => store.tmStore);
-const _realColor = computed(()=>props.realColor)
-//自定义样式：
-//const customCSSStyle = computedStyle(props);
-//自定类
-//const customClass = computedClass(props);
-//是否暗黑模式。
-
-// props_cust.value.borderDirection=borderDir.value
-const isDark = computed(() => computedDark({ ...props, borderDirection: borderDir.value }, tmcfg.value));
+const tmcfg = computed<tmVuetify>(() => store.tmStore)
+const _realColor = computed(() => props.realColor)
+const isDark = computed(() =>
+	computedDark(
+		{
+			...props,
+			borderDirection: borderDir.value
+		},
+		tmcfg.value
+	)
+)
 //计算主题
-const tmcomputed = computed(() => computedTheme({ ...props, borderDirection: borderDir.value }, isDark.value,tmcfg.value));
+const tmcomputed = computed(() =>
+	computedTheme(
+		{
+			...props,
+			borderDirection: borderDir.value
+		},
+		isDark.value,
+		tmcfg.value
+	)
+)
+function onClick(e: any) {
+	emits('click', e)
+}
 </script>
 
-<style>
-</style>
+<style></style>

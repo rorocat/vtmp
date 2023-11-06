@@ -1,5 +1,5 @@
 <template>
-  <BasicPage
+  <basic-page
     @register="register">
     <tm-button label="showConfirm" @click="showConfirm" />
     <tm-button label="showNotice" @click="showNotice" />
@@ -14,13 +14,14 @@
         </view>
       </view>
     </template>
-  </BasicPage>
+  </basic-page>
 </template>
 
 <script setup lang="ts">
-  import { usePage } from "/@/components/Basic/hooks/usePage";
-  import { usePageRouter } from "/@/router";
-  import { useApp } from '/@/hooks/useApp';
+  import { usePage } from "@/components/Basic/hooks/usePage";
+  import { usePageRouter } from "@/router";
+  import { useApp } from '@/hooks/useApp';
+  import BasicPage from "@/components/Basic/components/BasicPage/BasicPage.vue";
 
   const [register, { 
     createConfirm, 
@@ -28,7 +29,7 @@
     createMessage, 
     closeMessage, 
     setProps 
-  }] = usePage();
+  }] = usePage({});
 
   const { setAppDark, appDark, setAppTheme, appTheme } = useApp();
 

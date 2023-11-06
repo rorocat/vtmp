@@ -1,17 +1,38 @@
 <template>
-	<tm-sheet :color="props.color" :followTheme="props.followTheme" :dark="props.dark" :followDark="props.followDark"
-		:round="props.round" :shadow="props.shadow" :outlined="props.outlined" :border="props.border"
-		:borderStyle="props.borderStyle" :borderDirection="props.borderDirection" :text="props.text"
-		:transprent="props.transprent" :linear="props.linear" :linearDeep="props.linearDeep" :width="props.width"
-		:height="props.height" :margin="props.margin" :padding="props.padding" ref="tmDescriptions">
+	<tm-sheet
+		:color="props.color"
+		:followTheme="props.followTheme"
+		:dark="props.dark"
+		:followDark="props.followDark"
+		:round="props.round"
+		:shadow="props.shadow"
+		:outlined="props.outlined"
+		:border="props.border"
+		:borderStyle="props.borderStyle"
+		:borderDirection="props.borderDirection"
+		:text="props.text"
+		:transprent="props.transprent"
+		:linear="props.linear"
+		:linearDeep="props.linearDeep"
+		:width="props.width"
+		:height="props.height"
+		:margin="props.margin"
+		:padding="props.padding"
+		ref="tmDescriptions"
+	>
 		<slot name="title">
-			<tm-text v-if="props.title" _class="pb-12" :label="props.title" :font-size="30"></tm-text>
+			<tm-text v-if="props.title" _class="pb-16" :label="props.title" :font-size="30"></tm-text>
 		</slot>
-		<view class="flex  tmDescriptions" :style="[{ flexFlow: _cellWidth == 'auto' ? 'column' : 'row wrap' }]">
+
+		<view
+			class="tmDescriptions"
+			:class="[_cellWidth == 'auto' ? '' : 'flex flex-wrap flex-row-top-start']"
+			:style="[{ flexDirection: _cellWidth == 'auto' ? 'column' : 'row' }]"
+		>
 			<slot>
-				<view v-for="(item, index) in _dataList" :key="index" >
+				<block v-for="(item, index) in _dataList" :key="index">
 					<tm-descriptions-item :label="item.label" :value="item.value"></tm-descriptions-item>
-				</view>
+				</block>
 			</slot>
 		</view>
 	</tm-sheet>
@@ -23,17 +44,17 @@
  * @description 主要用于详细字段的陈述，可用于详情，列表一些描述性展示 。
  * @template title 标题，default 默认数据内容插槽
  */
-import tmDescriptionsItem from "../tm-descriptions-item/tm-descriptions-item.vue"
-import tmSheet from "../tm-sheet/tm-sheet.vue"
-import tmText from "../tm-text/tm-text.vue"
-import { getCurrentInstance, computed, ref, provide, inject, onUpdated, onMounted, onUnmounted, nextTick, watch } from 'vue';
-import { cssstyle, tmVuetify, colorThemeType } from '../../tool/lib/interface';
-import { custom_props, computedTheme, computedClass, computedStyle, computedDark } from '../../tool/lib/minxs';
+import tmDescriptionsItem from '../tm-descriptions-item/tm-descriptions-item.vue'
+import tmSheet from '../tm-sheet/tm-sheet.vue'
+import tmText from '../tm-text/tm-text.vue'
+import { getCurrentInstance, computed, ref, provide, inject, onUpdated, onMounted, onUnmounted, nextTick, watch } from 'vue'
+import { cssstyle, tmVuetify, colorThemeType } from '../../tool/lib/interface'
+import { custom_props, computedTheme, computedClass, computedStyle, computedDark } from '../../tool/lib/minxs'
 // #ifdef APP-PLUS-NVUE
 const dom = uni.requireNativePlugin('dom')
 // #endif
 const tmDescriptions = ref<InstanceType<typeof tmSheet> | null>(null)
-const proxy = getCurrentInstance()?.proxy??null;
+const proxy = getCurrentInstance()?.proxy ?? null
 const props = defineProps({
 	...custom_props,
 	shadow: {
@@ -50,11 +71,11 @@ const props = defineProps({
 	},
 	margin: {
 		type: Array,
-		default: () => [0, 0],
+		default: () => [0, 0]
 	},
 	padding: {
 		type: Array,
-		default: () => [16, 16],
+		default: () => [16, 16]
 	},
 	transprent: {
 		type: [Boolean, String],
@@ -82,24 +103,29 @@ const props = defineProps({
 	},
 	title: {
 		type: String,
-		default: ""
+		default: ''
 	},
 	//定标签为等宽
 	labelWidth: {
 		type: [String, Number],
-		default: ""
+		default: ''
+	},
+	//定标签为等宽
+	width: {
+		type: [Number],
+		default: 0
 	}
-
 })
 const _dataList = computed(() => {
 	return props.data.map((el: any) => {
 		return {
 			label: el[props.keyMap.key],
-			value: el[props.keyMap.value],
+			value: el[props.keyMap.value]
 		}
 	})
 })
-const _cellWidth = ref('0px');
+const _cellWidth = ref('0px')
+
 function nvueGetRect() {
 	// #ifdef APP-PLUS-NVUE
 	if (Number(props.column) <= 1) {
@@ -108,9 +134,9 @@ function nvueGetRect() {
 	}
 	try {
 		nextTick(function () {
-			dom?.getComponentRect(tmDescriptions.value, function (res:any) {
-				if (!res?.size) return;
-				_cellWidth.value = (res.size.width / Number(props.column) - uni.upx2px(20)) + 'px';
+			dom?.getComponentRect(tmDescriptions.value, function (res: any) {
+				if (!res?.size) return
+				_cellWidth.value = res.size.width / Number(props.column) - uni.upx2px(20) + 'px'
 				if (res.size.width == 0) {
 					nvueGetRect()
 				}
@@ -131,19 +157,20 @@ function nvueGetRect() {
 		.select('.tmDescriptions')
 		.boundingClientRect()
 		.exec(function (res) {
-			_cellWidth.value = (res[0].width / Number(props.column)) + 'px';
+			_cellWidth.value = res[0].width / Number(props.column) + 'px'
 
 			if (res[0].width == 0) {
 				nvueGetRect()
 			}
-		});
+		})
+
 	// #endif
 	// #ifdef APP-VUE || H5
 	if (Number(props.column) <= 1) {
 		_cellWidth.value = 'auto'
 		return
 	}
-	_cellWidth.value = 100 / Number(props.column) + '%';
+	_cellWidth.value = 100 / Number(props.column) + '%'
 	// #endif
 }
 onMounted(() => {
@@ -151,11 +178,14 @@ onMounted(() => {
 		nvueGetRect()
 	}
 })
-provide("tmDescriptionsItem", computed(() => _cellWidth.value))
-provide("tmDescriptionsLabelWidth", computed(() => props.labelWidth))
-
-
+provide(
+	'tmDescriptionsItem',
+	computed(() => _cellWidth.value)
+)
+provide(
+	'tmDescriptionsLabelWidth',
+	computed(() => props.labelWidth)
+)
 </script>
 
-<style>
-</style>
+<style></style>

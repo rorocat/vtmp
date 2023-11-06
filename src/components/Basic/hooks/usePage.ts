@@ -1,8 +1,8 @@
 import { ref, unref, onUnmounted, watch } from 'vue';
-import { ConfirmOptions } from '/@/components/Basic/types/confirm';
-import { MessageOptions } from '/@/components/Basic/types/message';
-import { NoticeOptions } from '/@/components/Basic/types/notice';
-import { PageActionType, PageProps } from "/@/components/Basic/types/page";
+import { ConfirmOptions } from '@/components/Basic/types/confirm';
+import { MessageOptions } from '@/components/Basic/types/message';
+import { NoticeOptions } from '@/components/Basic/types/notice';
+import { PageActionType, PageProps } from "@/components/Basic/types/page";
 
 export function usePage(props: PageProps)
 :[(instance: PageActionType)=> void, PageActionType ] {

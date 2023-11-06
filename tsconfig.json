@@ -11,12 +11,17 @@
     "esModuleInterop": true,
     "lib": ["esnext", "dom"],
     "types": ["@dcloudio/types"],
-    "typeRoots": ["./node_modules/@types/", "./types"],
-    "baseUrl": ".",
     "paths": {
-      "/@/*": ["src/*"],
+      "@/*": ["./src/*"]
     }
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
-  "exclude": ["node_modules", "dist", "**/*.js"]
+  "include": [
+    "./src/*.vue",
+    "./src/**/*.vue",
+    "./src/*.nvue",
+    "./src/**/*.nvue",
+    "./src/*.ts",
+    "./src/*.d.ts",
+    "./src/**/*.ts"
+  ]
 }

@@ -1,6 +1,6 @@
 import { onLoad } from "@dcloudio/uni-app";
 import { ComponentPublicInstance, ref } from "vue"
-import { isArray, isEmpty, isObject, isString, isUnDef } from "/@/utils/is";
+import { isArray, isEmpty, isObject, isString, isUnDef } from "@/utils/is";
 //如果想要使用框架的自带工具函数请输入uni.$tm.u.?你的方法
 //网络请示为uni.$tm.fetch.?你的方法
 

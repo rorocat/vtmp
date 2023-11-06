@@ -21,11 +21,11 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted } from "vue";
 import { ConfirmExpose, ConfirmOptions } from "../../types/confirm";
 import { MessageExpose, MessageOptions } from "../../types/message";
 import { NoticeExpose, NoticeOptions } from "../../types/notice";
-import { PageActionType, PageProps, TMAppAction } from "../../types/page";
+import { PageActionType, PageProps } from "../../types/page";
 
 /**
  * props
@@ -49,7 +49,7 @@ const emit = defineEmits(['register']);
 const confirmRef = ref<Nullable<ConfirmExpose>>(null);
 const noticeRef = ref<Nullable<NoticeExpose>>(null);
 const messageRef = ref<Nullable<MessageExpose>>(null);
-const pageProps = ref(props);
+const pageProps = ref<PageProps>(props);
 
 /**
  * lifecycle hooks

@@ -1,6 +1,6 @@
 import { computed } from "vue";
-import { isUnDef } from "/@/utils/is";
-import { useTmpiniaStore } from "/@/tmui/tool/lib/tmpinia";
+import { isUnDef } from "@/utils/is";
+import { useTmpiniaStore } from "@/tmui/tool/lib/tmpinia";
 
 export const useApp = ()=> {
   const store = useTmpiniaStore();
